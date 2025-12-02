@@ -1,25 +1,27 @@
-import mysql from "mysql2/promise";
+import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-export const db = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "passRoot14.",
-  database: process.env.DB_NAME || "lista_evento",
-  port: 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+export const db = new Sequelize(
+  process.env.DB_NAME || "lista_evento",
+  process.env.DB_USER || "root",
+  process.env.DB_PASS || "passRoot14.",
+  {
+    host: process.env.DB_HOST || "localhost",
+    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306, // parsea a número si existe
+    dialect: "mysql",
+    logging: false, // puedes cambiar a true para ver queries en consola
+  }
+);
 
 export const connectDB = async () => {
   try {
-    const connection = await db.getConnection();
-    console.log("MySQL conectado correctamente");
-    connection.release();
-  } catch (error) {
-    console.error("Error conectando a MySQL:", error);
+    await db.authenticate();
+    console.log("MySQL conectado correctamente con Sequelize");
+    await db.sync(); // crea tablas si no existen, puedes quitar si no quieres que sincronice automático
+  } catch (err) {
+    console.error("Error conectando a MySQL con Sequelize:", err);
     process.exit(1);
   }
 };

@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 
 import { connectDB } from "./config/db.js";
 import { registerUser } from "./controllers/registerUsers.controller.js";
-import { loginUser } from "./controllers/loginUsers.controller.js";
+import { loginUser } from "./routes/loginUsers.controller.js";
+
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,7 @@ async function main() {
     await connectDB();
     console.log("Conectado a la DB");
 
+    // Montar rutas
     app.use("/register", registerUser);
     app.use("/login", loginUser);
 

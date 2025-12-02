@@ -1,31 +1,29 @@
-import { db } from "../config/db.js";
-import bcrypt from "bcryptjs";  // para encriptar contraseña, opcional pero recomendable
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { User } from "../models/User.model.js";
 
+// REGISTRO
 export const registerUser = async (req, res) => {
-  const { username, email, password, phone } = req.body;
-
   try {
-    // Verificar si el usuario ya existe
-    const [existingUser] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
-    if (existingUser.length > 0) {
-      return res.status(400).json({ msg: "Usuario ya registrado" });
+    const { username, email, password, phone } = req.body;
+
+    const exists = await User.findOne({ where: { email } });
+    if (exists) {
+      return res.status(400).json({ msg: "El email ya está registrado" });
     }
 
-    // Encriptar password (opcional, muy recomendable)
-    const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
+    const hashed = await bcrypt.hash(password, 10);
 
-    // Insertar usuario
-    const [result] = await db.query(
-      "INSERT INTO users (username, email, password, phone) VALUES (?, ?, ?, ?)",
-      [username, email, hashedPassword, phone]
-    );
-
-    res.status(201).json({ 
-      msg: "Usuario registrado con éxito", 
-      userId: result.insertId 
+    const user = await User.create({
+      username,
+      email,
+      phone,
+      password: hashed,
     });
-  } catch (error) {
-    console.error("Error registrando usuario:", error);
-    res.status(500).json({ msg: "Error interno del servidor" });
+
+    res.json({ msg: "Usuario creado", user });
+
+  } catch (err) {
+    res.status(500).json({ msg: "Error registrando usuario", error: err });
   }
 };
