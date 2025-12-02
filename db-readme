@@ -9,3 +9,50 @@ CREATE TABLE User (
 );
 
 
+-- Ediciones/Reyes (ej: Reyes 2023)
+CREATE TABLE editions (
+id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT NOT NULL, -- creador (opcional)
+nombre VARCHAR(100) NOT NULL,
+year INT,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+ALTER TABLE users 
+  MODIFY createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE users 
+  MODIFY updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+-- Participantes (por edición)
+CREATE TABLE participants (
+id INT AUTO_INCREMENT PRIMARY KEY,
+edition_id INT NOT NULL,
+name VARCHAR(150) NOT NULL,
+priceTotal DECIMAL(10,2) DEFAULT 0.00,
+statusFav INT,
+statusBuy INT,
+statusSend INT,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (edition_id) REFERENCES editions(id) ON DELETE CASCADE
+);
+
+
+-- Regalos
+CREATE TABLE gifts (
+id INT AUTO_INCREMENT PRIMARY KEY,
+participant_id INT NOT NULL,
+preference INT DEFAULT 99,
+name VARCHAR(255) NOT NULL,
+siteGift VARCHAR(1000),
+link VARCHAR(500),
+price DECIMAL(10,2) DEFAULT 0.00,
+status ENUM('lista','envio','recibido','comprado') DEFAULT 'lista',
+date_bought DATETIME NULL,
+date_sent DATETIME NULL,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (participant_id) REFERENCES participants(id) ON DELETE CASCADE
+);
+
+

@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 
 import { connectDB } from "./config/db.js";
 import { registerUser } from "./controllers/registerUsers.controller.js";
-import { loginUser } from "./routes/loginUsers.controller.js";
+import { loginUser } from "./controllers/loginUsers.controller.js";
+import eventRoutes from "./routes/event.routes.js";
+import participantRoutes from "./routes/participants.routes.js";
 
 dotenv.config();
 
@@ -20,6 +22,8 @@ async function main() {
     // Montar rutas
     app.use("/register", registerUser);
     app.use("/login", loginUser);
+    app.use("/events", eventRoutes);
+    app.use("/participants", participantRoutes);
 
     app.get("/", (req, res) => res.send("Servidor activo"));
 

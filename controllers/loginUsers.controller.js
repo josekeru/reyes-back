@@ -13,8 +13,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ msg: "Usuario no encontrado" });
     }
 
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) {
+    if (password !== user.password) {
       return res.status(400).json({ msg: "Contraseña incorrecta" });
     }
 
@@ -26,12 +25,9 @@ export const loginUser = async (req, res) => {
 
     res.json({
       msg: "Login correcto",
-      token,
       user: {
         id: user.id,
         username: user.username,
-        email: user.email,
-        phone: user.phone,
       }
     });
 
