@@ -8,10 +8,13 @@ export const Event = db.define("event", {
   userId: { type: DataTypes.INTEGER, allowNull: false },
   year: { type: DataTypes.INTEGER, allowNull: false, },
   precioTotalGastadoTotal: { type: DataTypes.INTEGER },
-}, {
-  tableName: "events",
-  timestamps: false
-});
+}, 
+  {
+    tableName: "events",
+    timestamps: true,
+    createdAt: "createdAt",
+    updatedAt: "updatedAt",
+  });
 
 // Relaciones
 import { User } from "./User.model.js";
