@@ -9,6 +9,7 @@ export const Participant = db.define("Participant", {
     regalosDeseados: { type: DataTypes.INTEGER },
     regalosComprados: { type: DataTypes.INTEGER },
     regalosEnviados: { type: DataTypes.INTEGER },
+    regalosRecibidos: { type: DataTypes.INTEGER },
   },
   {
     tableName: "participants",

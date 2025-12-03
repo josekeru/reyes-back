@@ -7,6 +7,7 @@ import { registerUser } from "./controllers/registerUsers.controller.js";
 import { loginUser } from "./controllers/loginUsers.controller.js";
 import eventRoutes from "./routes/event.routes.js";
 import participantRoutes from "./routes/participants.routes.js";
+import giftRoutes from "./routes/gifts.routes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ async function main() {
     app.use("/login", loginUser);
     app.use("/events", eventRoutes);
     app.use("/participants", participantRoutes);
+    app.use("/gifts", giftRoutes);
 
     app.get("/", (req, res) => res.send("Servidor activo"));
 

@@ -6,8 +6,8 @@ export const Event = db.define("event", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   nombre: { type: DataTypes.STRING, allowNull: false },
   userId: { type: DataTypes.INTEGER, allowNull: false },
-  year: { type: DataTypes.INTEGER, allowNull: false,
-  },
+  year: { type: DataTypes.INTEGER, allowNull: false, },
+  precioTotalGastadoTotal: { type: DataTypes.INTEGER },
 }, {
   tableName: "events",
   timestamps: false
