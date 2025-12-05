@@ -1,4 +1,4 @@
-CREATE TABLE User (
+CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
@@ -10,13 +10,15 @@ CREATE TABLE User (
 
 
 -- Ediciones/Reyes (ej: Reyes 2023)
-CREATE TABLE editions (
+CREATE TABLE events (
 id INT AUTO_INCREMENT PRIMARY KEY,
-user_id INT NOT NULL, -- creador (opcional)
+userId INT NOT NULL, -- creador (opcional)
 nombre VARCHAR(100) NOT NULL,
 year INT,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+precioTotalGastadoTotal DECIMAL(10,2) DEFAULT 0.00,
+FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
 ALTER TABLE users 
@@ -30,12 +32,13 @@ CREATE TABLE participants (
 id INT AUTO_INCREMENT PRIMARY KEY,
 edition_id INT NOT NULL,
 name VARCHAR(150) NOT NULL,
-priceTotal DECIMAL(10,2) DEFAULT 0.00,
-statusFav INT,
-statusBuy INT,
-statusSend INT,
+precioTotalGastado DECIMAL(10,2) DEFAULT 0.00,
+regalosDeseados INT,
+regalosComprados INT,
+regalosEnviados INT,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (edition_id) REFERENCES editions(id) ON DELETE CASCADE
+regalosRecibidos INT,
+FOREIGN KEY (edition_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
 
@@ -53,6 +56,7 @@ statusActual ENUM('lista','envio','recibido','comprado') DEFAULT 'lista',
 date_bought DATETIME NULL,
 date_sent DATETIME NULL,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+date_received DATETIME NULL,
 FOREIGN KEY (participant_id) REFERENCES participants(id) ON DELETE CASCADE
 );
 
