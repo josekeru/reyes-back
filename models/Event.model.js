@@ -10,7 +10,8 @@ export const Event = db.define("event", {
   precioTotalGastadoTotal: { type: DataTypes.INTEGER },
 }, 
   {
-    tableName: "events",
+    tableName: "events",   // 👈 SOLUCIÓN PRINCIPAL
+    freezeTableName: true,
     timestamps: true,
     createdAt: "createdAt",
     updatedAt: "updatedAt",

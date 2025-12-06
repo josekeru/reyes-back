@@ -29,7 +29,8 @@ export const Gift = db.define(
     }
   },
   {
-    tableName: "gifts",
+    tableName: "gifts",   // 👈 SOLUCIÓN PRINCIPAL
+    freezeTableName: true,
     timestamps: false
   }
 );
