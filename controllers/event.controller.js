@@ -1,14 +1,34 @@
 import { Event } from "../models/Event.model.js";
+import { Gift } from "../models/Gift.model.js";
 
 // Crear evento
 export const createEvent = async (req, res) => {
   try {
     const event = await Event.create(req.body);
-    res.json({ msg: "Evento creado", event });
+    let code = null;
+    if (req.body.isOnlyList) {
+      code = await generateUniqueCode();
+    }
+    res.json({ msg: "Evento creado", event,  code: code });
   } catch (error) {
     res.status(500).json({ msg: "Error creando evento", error });
   }
 };
+
+async function generateUniqueCode() {
+  let code = generateCode();
+  let exists = await Gift.findOne({ where: { participant_id: code } });
+  // Si existe, generar otro hasta que no exista
+  while (exists) {
+    code = generateCode();
+    exists = await Gift.findOne({ where: { participant_id: code } });
+  }
+  return code;
+}
+function generateCode() {
+  // return Math.random().toString(36).substring(2, 8).toUpperCase(); // Ej: "A9F3K2"
+  return Math.floor(100000 + Math.random() * 900000).toString(); // Ej: "483920"
+}
 
 // Editar evento
 export const updateEvent = async (req, res) => {
@@ -32,9 +52,11 @@ export const getEventById = async (req, res) => {
 
 // Obtener eventos por usuario
 export const getEventsByUser = async (req, res) => {
-    try {
-  const events = await Event.findAll({ where: { userId: req.params.userId } });
-  res.json(events);
+  try {
+    const events = await Event.findAll({
+      where: { userId: req.params.userId },
+    });
+    res.json(events);
   } catch (error) {
     res.status(500).json({ msg: "Error recuperando evento", error });
   }
