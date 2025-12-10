@@ -20,4 +20,7 @@ export const User = db.define("User", {
     type: DataTypes.STRING,
     allowNull: true,
   }
+}, {
+  tableName: "users",   // 👈 SOLUCIÓN PRINCIPAL
+  freezeTableName: true // 👈 Evita que Sequelize lo pluralice
 });

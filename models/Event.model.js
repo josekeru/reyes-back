@@ -8,9 +8,11 @@ export const Event = db.define("event", {
   userId: { type: DataTypes.INTEGER, allowNull: false },
   year: { type: DataTypes.INTEGER, allowNull: false, },
   precioTotalGastadoTotal: { type: DataTypes.INTEGER },
+  isOnlyList: { type: DataTypes.BOOLEAN, defaultValue: false },
 }, 
   {
-    tableName: "events",
+    tableName: "events",   // 👈 SOLUCIÓN PRINCIPAL
+    freezeTableName: true,
     timestamps: true,
     createdAt: "createdAt",
     updatedAt: "updatedAt",

@@ -12,7 +12,8 @@ export const Participant = db.define("Participant", {
     regalosRecibidos: { type: DataTypes.INTEGER },
   },
   {
-    tableName: "participants",
+    tableName: "participants",   // 👈 SOLUCIÓN PRINCIPAL
+    freezeTableName: true,
     timestamps: true,
     createdAt: "created_at",
     updatedAt: false, // porque NO tienes updated_at
