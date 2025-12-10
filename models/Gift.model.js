@@ -12,6 +12,7 @@ export const Gift = db.define(
     preference: { type: DataTypes.INTEGER, defaultValue: 99 },
     name: { type: DataTypes.STRING(255), allowNull: false },
     siteGift: { type: DataTypes.STRING(1000) },
+    description: { type: DataTypes.STRING(1000) },
     link: { type: DataTypes.STRING(500) },
     price: { type: DataTypes.DECIMAL(10, 2), defaultValue: 0.0 },
     status: {
